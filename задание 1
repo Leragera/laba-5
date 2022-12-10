@@ -1,0 +1,26 @@
+from random import randint
+print("Введите количество элементов массива")
+massiv = [randint(0, 1) for i in range(int(input()))]
+count_i = 0
+zero_possib, one_possib = massiv.count(0)/len(massiv), massiv.count(1)/len(massiv)
+#print(a)
+n = len(massiv)
+print(f"Вероятность 0 = {zero_possib}")
+print(f"Вероятность 1 = {one_possib}")
+massiv = list(map(str, massiv))
+a = ''.join(massiv)
+for i in range(2, n+1):
+    zero_possib_a, one_possib_a = 0, 0
+    if ('0' * i) in a or ('1' * i) in a:
+        count_i = n - i + 1
+        k0 = 0
+        k1 = 0
+        for j in range(0, n):
+            if a[j:j+i] == '0'*i:
+                k0 += 1
+            if a[j:j+i] == '1'*i:
+                k1 += 1
+        zero_possib_a = k0/count_i
+        one_possib_a = k1/count_i
+        print(f"Вероятность {'0' * i} = {zero_possib_a}")
+        print(f"Вероятность {'1' * i} = {one_possib_a}")
