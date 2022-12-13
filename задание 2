@@ -1,64 +1,77 @@
+def ver(n, a):
+    c = 0
+    for i in a:
+        if n == i:
+            c += 1
+    return (c / len(a))
+
+def mo(a):
+    c = 0
+    for k in a:
+        c += k * (1 / len(a))
+    return c
+
+def cko(a):
+    c = 0
+    for i in a:
+        c += (i - mo(a)) * (i - mo(a))
+    c = c / len(a)
+    c = c**(0.5)
+    return c
+
+def pb(a):
+    c = 0
+    for i in range(len(a) + 1):
+        c += i
+    cx = c / len(a)
+    c = 0
+    for i in a:
+        c += i
+    cy = c / len(a)
+    c = 0
+    j = 0
+    for i in a:
+        j += 1
+        c += i * j
+    cxy = c / len(a)
+    c = 0
+    cx2 = 0
+    for i in range(len(a) + 1):
+        c += i * i
+    cx2 = c / len(a)
+    c = (cxy - (cx * cy)) / (cx2 - (cx * cx))
+    return c
+
+def pa(a):
+    c = 0
+    for i in range(len(a) + 1):
+        c += i
+    cx = c / len(a)
+    c = 0
+    for i in a:
+        c += i
+    cy = c / len(a)
+    c = 0
+    c = cy - pb(a) * cx
+    return c
+
 import matplotlib.pyplot as plt
-import numpy as np
-import numpy.random
+from random import randint
 
-n = int(input("Введите количество строк массива: "))
-maximum = int(input("Введите максимальный элемент массива: "))
-massiv = np.random.randint(0, maximum, (n, 2))
-print(massiv)
-#математическое ожидание
-mean = np.sum(massiv)/(len(massiv)*2)
-print("Математическое ожидание: ", mean)
+a = []
+for i in range(100):
+    a.append(randint(i - 20, i + 20))
+print(a)
 
-#дисперсия
-s = np.var(massiv)
+print("Математическое ожидание: ", mo(a))
+print("Среднеквадратическое отклонение: ", cko(a))
 
-#стандартное отклонение
-sigma = np.std(massiv)
-print("Стандартное отклонение: ", sigma)
+b = []
+paa = pa(a)
+pba = pb(a)
+for i in range(len(a) + 1):
+    b.append(paa + pba * i)
 
-sum_x = 0
-for i in range(len(massiv)):
-    sum_x += massiv[i][0]
-
-sum_x2 = 0
-for i in range(len(massiv)):
-    sum_x2 += massiv[i][0] ** 2
-
-sum_y = 0
-for j in range(len(massiv)):
-    sum_y += massiv[j][1]
-
-sum_xy = sum_x * sum_y
-
-#коэффициенты k, b
-k = (len(massiv) * 2 * mean - sum_xy) / (len(massiv) * 2 * sum_x2 - sum_x * sum_x)
-b = (sum_y - k * sum_x)/(len(massiv) * 2)
-
-
-#точки
-massiv_x = []
-for i in range(len(massiv)):
-    massiv_x.append(massiv[i][0])
-
-massiv_y = []
-for i in range(len(massiv)):
-    massiv_y.append(massiv[i][1])
-min_massiv_y = min(massiv_y)
-max_massiv_y = max(massiv_y)
-
-#функция
-fx = []
-fy = []
-maxx = max(massiv_x)
-minn = min(massiv_x)
-
-for i in range(minn, maxx + 1):
-    fx.append(i)
-    fy.append(k * i + b)
-
-plt.scatter(massiv_x, massiv_y, s=15, c='red')
-plt.plot(fx, fy, color='red')
-#plt.scatter([minn, maxx],[min_massiv_y - min_massiv_y * 0.5, max_massiv_y + max_massiv_y * 0.5], color ='white')
-plt.grid(True)
+plt.plot(a, 'bo')
+plt.plot(b, 'r', linewidth = 3.0)
 plt.show()
